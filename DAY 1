@@ -1,19 +1,14 @@
-# Define a Student class
-class Student:
-    def __init__(self, name, age, grade, student_id):
-        self.name = name
-        self.age = age
-        self.grade = grade
-        self.student_id = student_id
 
-    def print_details(self):
-        print(f"Student Name: {self.name}")
-        print(f"Age: {self.age}")
-        print(f"Grade: {self.grade}")
-        print(f"Student ID: {self.student_id}")
+// Step 1: Create a student object
+const student = {
+    name: "Harshal",
+    age: 20,
+    grade: "A",
+    studentId: "0187CS23xxx"
+};
 
-# Create a student object
-student_1 = Student("HARSHAL", 20, "A", "S12345")
-
-# Print the student details
-student_1.print_details()
+// Step 2: Print student details
+console.log("Student Name:", student.name);
+console.log("Age:", student.age);
+console.log("Grade:", student.grade);
+console.log("Student ID:", student.studentId);
