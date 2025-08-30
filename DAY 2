@@ -1,0 +1,10 @@
+// Full JavaScript Code to Find Highest Marks
+
+// Step 1: Define an array of student marks
+const marks = [78, 85, 62, 90, 88, 76, 95, 89];
+
+// Step 2: Find the highest mark using Math.max and spread operator
+const highestMark = Math.max(...marks);
+
+// Step 3: Print the highest mark
+console.log("Highest Mark:", highestMark);
