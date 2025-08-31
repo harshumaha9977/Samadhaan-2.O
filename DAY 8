@@ -1,0 +1,60 @@
+import React, { useState } from "react";
+
+export default function TodoApp() {
+  const [task, setTask] = useState(""); // current input
+  const [todos, setTodos] = useState([]); // list of tasks
+
+  // Add task
+  const addTask = () => {
+    if (task.trim() === "") return; // ignore empty input
+    setTodos([...todos, task]); // add new task to array
+    setTask(""); // reset input
+  };
+
+  // Remove task
+  const removeTask = (index) => {
+    const newTodos = todos.filter((_, i) => i !== index);
+    setTodos(newTodos);
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-4 p-6">
+      <h1 className="text-2xl font-bold">To-Do List</h1>
+
+      {/* Input + Add button */}
+      <div className="flex gap-2">
+        <input
+          type="text"
+          placeholder="Enter a task..."
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
+          className="border p-2 rounded-xl"
+        />
+        <button
+          onClick={addTask}
+          className="px-4 py-2 bg-blue-500 text-white rounded-xl"
+        >
+          Add
+        </button>
+      </div>
+
+      {/* Task List */}
+      <ul className="w-full max-w-sm">
+        {todos.map((t, index) => (
+          <li
+            key={index}
+            className="flex justify-between items-center p-2 border-b"
+          >
+            {t}
+            <button
+              onClick={() => removeTask(index)}
+              className="px-2 py-1 bg-red-500 text-white rounded-md"
+            >
+              X
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
