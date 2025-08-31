@@ -1,0 +1,40 @@
+import React, { useState } from "react";
+
+export default function MiniTask() {
+  // Counter State
+  const [count, setCount] = useState(0);
+
+  // Input Text State
+  const [text, setText] = useState("");
+
+  return (
+    <div className="flex flex-col items-center gap-4 p-6">
+      {/* Counter */}
+      <h2 className="text-xl font-bold">Counter: {count}</h2>
+      <div className="flex gap-2">
+        <button 
+          onClick={() => setCount(count - 1)} 
+          className="px-4 py-2 bg-red-500 text-white rounded-xl"
+        >
+          -
+        </button>
+        <button 
+          onClick={() => setCount(count + 1)} 
+          className="px-4 py-2 bg-green-500 text-white rounded-xl"
+        >
+          +
+        </button>
+      </div>
+
+      {/* Live Text Preview */}
+      <input 
+        type="text" 
+        placeholder="Type something..." 
+        value={text} 
+        onChange={(e) => setText(e.target.value)} 
+        className="border p-2 rounded-xl"
+      />
+      <p className="text-lg">Live Preview: <span className="font-semibold">{text}</span></p>
+    </div>
+  );
+}
