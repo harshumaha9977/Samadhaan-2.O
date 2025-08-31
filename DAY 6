@@ -1,0 +1,51 @@
+import React from 'react';
+
+function App() {
+  // Inline styles for the card and image
+  const styles = {
+    card: {
+      width: '280px',
+      margin: '50px auto',
+      padding: '20px',
+      borderRadius: '10px',
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+      backgroundColor: '#fff',
+      fontFamily: 'Arial, sans-serif',
+      textAlign: 'center',
+    },
+    image: {
+      width: '100px',
+      height: '100px',
+      borderRadius: '50%',
+      objectFit: 'cover',
+      marginBottom: '15px',
+    },
+  };
+
+  // ProfileCard component inside App
+  const ProfileCard = ({ name, age, bio, image }) => {
+    return (
+      <div style={styles.card}>
+        <img src={image} alt={name} style={styles.image} />
+        <h2>{name}</h2>
+        <p><strong>Age:</strong> {age}</p>
+        <p>{bio}</p>
+      </div>
+    );
+  };
+
+  // Render
+  return (
+    <div>
+      <h1 style={{ textAlign: 'center' }}>Student Profile</h1>
+      <ProfileCard
+        name="Alice Johnson"
+        age={20}
+        bio="A passionate learner and front-end enthusiast."
+        image="https://via.placeholder.com/150"
+      />
+    </div>
+  );
+}
+
+export default App;
