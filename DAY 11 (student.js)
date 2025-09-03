@@ -1,0 +1,49 @@
+// routes/students.js
+const express = require('express');
+const router = express.Router();
+
+let students = []; // In-memory storage
+let idCounter = 1;
+
+// GET all students
+router.get('/', (req, res) => {
+  res.json(students);
+});
+
+// GET student by ID
+router.get('/:id', (req, res) => {
+  const student = students.find(s => s.id === parseInt(req.params.id));
+  if (!student) return res.status(404).json({ message: 'Student not found' });
+  res.json(student);
+});
+
+// POST create student
+router.post('/', (req, res) => {
+  const { name, age } = req.body;
+  const newStudent = { id: idCounter++, name, age };
+  students.push(newStudent);
+  res.status(201).json(newStudent);
+});
+
+// PUT update student
+router.put('/:id', (req, res) => {
+  const student = students.find(s => s.id === parseInt(req.params.id));
+  if (!student) return res.status(404).json({ message: 'Student not found' });
+
+  const { name, age } = req.body;
+  if (name) student.name = name;
+  if (age) student.age = age;
+
+  res.json(student);
+});
+
+// DELETE student
+router.delete('/:id', (req, res) => {
+  const index = students.findIndex(s => s.id === parseInt(req.params.id));
+  if (index === -1) return res.status(404).json({ message: 'Student not found' });
+
+  students.splice(index, 1);
+  res.json({ message: 'Student deleted' });
+});
+
+module.exports = router;
