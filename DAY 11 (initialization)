@@ -1,0 +1,4 @@
+mkdir student-crud-api
+cd student-crud-api
+npm init -y
+npm install express
