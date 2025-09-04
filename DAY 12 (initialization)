@@ -1,0 +1,4 @@
+mkdir todo-backend
+cd todo-backend
+npm init -y
+npm install express cors body-parser
