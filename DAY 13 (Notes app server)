@@ -1,0 +1,102 @@
+// Import necessary libraries
+const express = require('express');
+const mongoose = require('mongoose');
+
+// Initialize the Express application
+const app = express();
+const port = 3000;
+
+// Middleware to parse JSON bodies from incoming requests
+app.use(express.json());
+
+// Simple CORS middleware to allow the frontend to access the API
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins for this example
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
+
+// Replace this with your actual MongoDB connection string.
+// For a local database, it might look like: 'mongodb://localhost:27017/notes-app'
+const dbURI = 'YOUR_MONGODB_CONNECTION_STRING_HERE';
+
+// Connect to MongoDB
+mongoose.connect(dbURI)
+    .then(() => console.log('MongoDB connected successfully'))
+    .catch(err => console.error('MongoDB connection error:', err));
+
+// Define a Mongoose schema for the Note model
+const noteSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    content: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
+});
+
+// Create the Note model from the schema
+const Note = mongoose.model('Note', noteSchema);
+
+// --- API Endpoints (CRUD Operations) ---
+
+// CREATE a new note
+app.post('/api/notes', async (req, res) => {
+    try {
+        const newNote = new Note(req.body);
+        await newNote.save();
+        res.status(201).json(newNote);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
+
+// READ all notes
+app.get('/api/notes', async (req, res) => {
+    try {
+        const notes = await Note.find().sort({ createdAt: -1 }); // Get all notes, sorted by creation date
+        res.status(200).json(notes);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// UPDATE a note by ID
+app.put('/api/notes/:id', async (req, res) => {
+    try {
+        const note = await Note.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!note) {
+            return res.status(404).json({ message: 'Note not found' });
+        }
+        res.status(200).json(note);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
+
+// DELETE a note by ID
+app.delete('/api/notes/:id', async (req, res) => {
+    try {
+        const note = await Note.findByIdAndDelete(req.params.id);
+        if (!note) {
+            return res.status(404).json({ message: 'Note not found' });
+        }
+        res.status(200).json({ message: 'Note deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
