@@ -1,0 +1,91 @@
+import { useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+function App() {
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
+  // Fake login (hardcoded user)
+  const handleLogin = (email, password) => {
+    if (email === "test@example.com" && password === "123456") {
+      localStorage.setItem("token", "faketoken123");
+      setToken("faketoken123");
+    } else {
+      alert("Invalid credentials");
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+  };
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            token ? <Navigate to="/dashboard" /> : <Login onLogin={handleLogin} />
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            token ? (
+              <Dashboard onLogout={handleLogout} />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+function Login({ onLogin }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  return (
+    <div className="p-6 max-w-sm mx-auto">
+      <h2 className="text-xl font-bold mb-4">Login</h2>
+      <input
+        className="border p-2 w-full mb-2"
+        placeholder="Email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+      />
+      <input
+        type="password"
+        className="border p-2 w-full mb-2"
+        placeholder="Password"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+      />
+      <button
+        onClick={() => onLogin(email, password)}
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Login
+      </button>
+    </div>
+  );
+}
+
+function Dashboard({ onLogout }) {
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl">Dashboard</h1>
+      <p>✅ You are logged in!</p>
+      <button
+        onClick={onLogout}
+        className="mt-4 bg-red-500 text-white px-4 py-2 rounded"
+      >
+        Logout
+      </button>
+    </div>
+  );
+}
+
+export default App;
